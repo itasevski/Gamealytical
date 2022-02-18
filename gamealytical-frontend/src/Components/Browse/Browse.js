@@ -11,6 +11,7 @@ import {
     TableRow
 } from "@material-ui/core";
 import "./Browse.css";
+import {Link} from "react-router-dom";
 
 const Browse = () => {
     const [page, setPage] = React.useState(0);
@@ -45,9 +46,9 @@ const Browse = () => {
 
     return (
         <div style={{ marginTop: "50px", marginBottom: "100px" }}>
-            <Grid item xs={12}>
-                <Grid container justifyContent="center" direction="column" alignItems="center">
-                    <Grid item xs={12}>
+            <Grid container justifyContent="center" direction="column" alignItems="center">
+                <Grid item xs={12}>
+                    <Grid container>
                         <TableContainer>
                             <Table sx={{ minWidth: 850 }} style={{ width: 1400 }}>
                                 <TableHead>
@@ -69,25 +70,27 @@ const Browse = () => {
                                                 <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "17px" }} align="center">{row.releaseDate}</TableCell>
                                                 <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "17px" }} align="center">{row.creator}</TableCell>
                                                 <TableCell align="center">
-                                                    <Button id="viewDetailsButton" variant="outlined" color="primary">
-                                                        View details
-                                                    </Button>
+                                                    <Link to="/gameDetails" style={{ textDecoration: "none", color: "white" }}>
+                                                        <Button id="viewDetailsButton" variant="outlined" color="primary">
+                                                            View details
+                                                        </Button>
+                                                    </Link>
                                                 </TableCell>
                                             </TableRow>
                                         );
                                     })}
                                 </TableBody>
+                                <TablePagination
+                                    style={{ backgroundColor: "white", marginTop: "15px", borderRadius: "10px" }}
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    component="div"
+                                    count={rows.length} // change to length of total number of rows/games
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                />
                             </Table>
-                            <TablePagination
-                                style={{ backgroundColor: "white", marginTop: "15px", borderRadius: "10px" }}
-                                rowsPerPageOptions={[5, 10, 25]}
-                                component="div"
-                                count={rows.length} // change to length of total number of rows/games
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
                         </TableContainer>
                     </Grid>
                 </Grid>

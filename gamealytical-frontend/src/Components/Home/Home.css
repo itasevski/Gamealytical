@@ -14,3 +14,12 @@
     color: white;
     padding: 10px;
 }
+
+#searchButton {
+    margin-top: 20px;
+}
+
+#searchButton:hover {
+    background-color: #FF6347;
+    color: white;
+}
