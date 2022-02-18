@@ -1,0 +1,22 @@
+#headerAppBar {
+    background-color: #152238;
+}
+
+#headerLogo {
+    margin-left: 25%;
+    font-size: 30px;
+    font-family: Fantasy;
+}
+
+.headerLink {
+    color: white;
+    text-decoration: none;
+    font-family: Courier New;
+    padding-right: 25px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.headerLink:hover {
+    color: #FF6347;
+}

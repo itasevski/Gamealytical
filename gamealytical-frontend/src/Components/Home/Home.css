@@ -1,0 +1,16 @@
+#searchGameHeading, #featuredGamesHeading {
+    margin-top: 50px;
+    margin-bottom: 25px;
+    font-family: Courier New;
+    font-weight: bold;
+    color: white;
+}
+
+#searchGameInputBase {
+    border: 2px solid #1273de;
+    height: 40px;
+    width: 500px;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+}

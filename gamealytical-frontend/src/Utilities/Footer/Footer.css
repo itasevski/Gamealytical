@@ -1,0 +1,12 @@
+#footerBottomNavigation {
+    margin-top: auto;
+    background-color: #152238;
+}
+
+.footerLink {
+    color: white;
+}
+
+.footerLink:hover {
+    color: #FF6347;
+}

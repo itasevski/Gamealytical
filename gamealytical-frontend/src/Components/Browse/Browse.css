@@ -1,0 +1,13 @@
+#viewDetailsButton {
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: bolder;
+    margin-left: 100px;
+    color: white;
+    border-color: white;
+}
+
+#viewDetailsButton:hover {
+    background-color: #1273de;
+    color: white;
+}

@@ -1,0 +1,9 @@
+main {
+    min-height: 110vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../Images/background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
