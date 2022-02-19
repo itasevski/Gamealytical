@@ -60,7 +60,7 @@ const Home = () => {
                     <Grid container justifyContent="center" direction="column" alignItems="center">
                         <InputBase
                             id="searchGameInputBase"
-                            placeholder="Please enter full name of the video game..."
+                            placeholder="Enter full name of the video game..."
                             startAdornment={<Search style={{ color: "white", fontSize: "30px", paddingRight: "10px" }} />}
                             type="search"
                             variant="outlined"
