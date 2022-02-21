@@ -4,9 +4,7 @@ import mk.ukim.finki.gamealytical.service.GamealyticalService;
 import org.apache.jena.query.*;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GamealyticalServiceImplementation implements GamealyticalService {
@@ -15,7 +13,24 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
 
     private static String allGamesQueryConstructor() {
         // TODO: 19/02/2022
-        return "";
+        return "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+                "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+                "prefix dbo: <http://dbpedia.org/ontology/>" +
+                "prefix dbp: <http://dbpedia.org/property/>" +
+                "prefix owl: <http://www.w3.org/2002/07/owl#>" +
+                "SELECT DISTINCT ?game ?name ?image (group_concat(distinct ?genre; separator=\", \") as ?genres) (group_concat(distinct ?publisher; separator=\", \") as ?publishers) (group_concat(distinct ?releaseDate; separator=\", \") as ?releaseDates) (group_concat(distinct ?ignRating; separator=\", \") as ?ignRatings) " +
+                "WHERE { " +
+                "?game rdf:type dbo:VideoGame ; " +
+                "rdfs:label ?name ; " +
+                "dbo:thumbnail ?image . " +
+                "OPTIONAL { ?game dbo:genre ?genreUrl . ?genreUrl rdfs:label ?genre } . " +
+                "OPTIONAL { ?game dbo:publisher ?publisherUrl . ?publisherUrl rdfs:label ?publisher } . " +
+                "OPTIONAL { ?game dbo:releaseDate ?releaseDate } . " +
+                "OPTIONAL { ?game dbp:ign ?ignRating } . " +
+                "FILTER(lang(?name) = \"en\")" +
+                "FILTER(lang(?genre) = \"en\")" +
+                "FILTER(lang(?publisher) = \"en\")" +
+                "}" + "GROUP BY ?game ?name ?image";
     }
 
     private static String singleGameQueryConstructor(String name) {
@@ -24,14 +39,14 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
                 "prefix dbo: <http://dbpedia.org/ontology/>" +
                 "prefix dbp: <http://dbpedia.org/property/>" +
                 "prefix owl: <http://www.w3.org/2002/07/owl#>" +
-                "select ?game ?name ?description ?image ?developer ?genre ?publisher (group_concat(distinct ?releaseDate; separator=\", \") as ?releaseDates) (group_concat(distinct ?platform; separator=\", \") as ?platforms) ?ignRating ?comment (group_concat(distinct ?related; separator=\", \") as ?relatedTopics)" +
-                "where { " +
+                "SELECT ?game ?name ?description ?image (group_concat(distinct ?developer; separator=\", \") as ?developers) (group_concat(distinct ?genre; separator=\", \") as ?genres) (group_concat(distinct ?publisher; separator=\", \") as ?publishers) (group_concat(distinct ?releaseDate; separator=\", \") as ?releaseDates) (group_concat(distinct ?platform; separator=\", \") as ?platforms) (group_concat(distinct ?ignRating; separator=\", \") as ?ignRatings) ?comment (group_concat(distinct ?related; separator=\", \") as ?relatedTopics) " +
+                "WHERE { " +
                 "?game rdfs:label" + "\"" + name + "\"@en ; " +
                 "rdfs:label ?name ; " +
-                "dbo:abstract ?description ; " +
-                "dbo:thumbnail ?image ; " +
-                "rdfs:comment ?comment ; " +
-                "owl:sameAs ?related . " +
+                "dbo:abstract ?description . " +
+                "OPTIONAL { ?game dbo:thumbnail ?image } . " +
+                "OPTIONAL { ?game rdfs:comment ?comment } . " +
+                "OPTIONAL { ?game owl:sameAs ?related } . " +
                 "OPTIONAL { ?game dbo:developer ?developerUrl . ?developerUrl rdfs:label ?developer } . " +
                 "OPTIONAL { ?game dbo:genre ?genreUrl . ?genreUrl rdfs:label ?genre } . " +
                 "OPTIONAL { ?game dbo:publisher ?publisherUrl . ?publisherUrl rdfs:label ?publisher } . " +
@@ -42,14 +57,63 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
                 "FILTER(lang(?description) = \"en\")" +
                 "FILTER(lang(?comment) = \"en\")" +
                 "FILTER(lang(?developer) = \"en\")" +
-                "FILTER(lang(?publisher) = \"en\")" +
                 "FILTER(lang(?genre) = \"en\")" +
-                "}" + "GROUP BY ?game ?name ?description ?image ?developer ?genre ?publisher ?ignRating ?comment";
+                "FILTER(lang(?publisher) = \"en\")" +
+                "}" + "GROUP BY ?game ?name ?description ?image ?comment";
     }
 
-    private static Map<String, String> executeAllGamesQuery() {
-        // TODO: 19/02/2022
-        return null;
+    private static String featuredGamesQueryConstructor() {
+        return "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+                "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+                "prefix dbo: <http://dbpedia.org/ontology/>" +
+                "prefix dbp: <http://dbpedia.org/property/>" +
+                "prefix owl: <http://www.w3.org/2002/07/owl#>" +
+                "prefix xsd: <http://www.w3.org/2001/XMLSchema#>" +
+                "SELECT DISTINCT ?game ?name ?comment ?image ?ignRating " +
+                "WHERE {" +
+                "?game rdf:type dbo:VideoGame ;" +
+                "rdfs:label ?name ;" +
+                "rdfs:comment ?comment ;" +
+                "dbo:thumbnail ?image ;" +
+                "dbp:ign ?ignRating ." +
+                "FILTER(lang(?name) = \"en\")" +
+                "FILTER(lang(?comment) = \"en\")" +
+                "FILTER(xsd:decimal(?ignRating))" +
+                "}" + "GROUP BY ?game ?name ?comment ?image ?ignRating ORDER BY DESC(?ignRating) LIMIT 20";
+    }
+
+    private static List<Map<String, String>> executeAllGamesQuery() {
+        String queryString = allGamesQueryConstructor();
+
+        Query query = QueryFactory.create(queryString);
+
+        List<Map<String, String>> videoGameList = new ArrayList<>();
+
+        try(QueryExecution queryExecution = QueryExecutionFactory.sparqlService(dbpediaSparqlEndpoint, query)) {
+            ResultSet resultSet = queryExecution.execSelect();
+            QuerySolution querySolution;
+            Map<String, String> videoGameMap;
+            while (resultSet.hasNext()) {
+                querySolution = resultSet.next();
+
+                videoGameMap = new HashMap<>();
+
+                videoGameMap.put("game", querySolution.get("game").toString());
+                videoGameMap.put("name", querySolution.get("name").toString());
+                videoGameMap.put("image", querySolution.get("image").toString());
+                videoGameMap.put("genre", querySolution.get("genres").toString());
+                videoGameMap.put("publisher", querySolution.get("publishers").toString());
+                videoGameMap.put("releaseDates", querySolution.get("releaseDates").toString());
+                videoGameMap.put("ignRating", querySolution.get("ignRatings").toString().split("\\^\\^")[0]);
+
+                videoGameList.add(videoGameMap);
+            }
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return videoGameList;
     }
 
     private static Map<String, String> executeSingleGameQuery(String name) {
@@ -67,12 +131,12 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
             videoGameMap.put("description", querySolution.get("description").toString());
             videoGameMap.put("comment", querySolution.get("comment").toString());
             videoGameMap.put("image", querySolution.get("image").toString());
-            videoGameMap.put("genre", querySolution.get("genre").toString());
-            videoGameMap.put("developer", querySolution.get("developer").toString());
-            videoGameMap.put("publisher", querySolution.get("publisher").toString());
+            videoGameMap.put("genre", querySolution.get("genres").toString());
+            videoGameMap.put("developer", querySolution.get("developers").toString());
+            videoGameMap.put("publisher", querySolution.get("publishers").toString());
             videoGameMap.put("releaseDates", querySolution.get("releaseDates").toString());
             videoGameMap.put("platforms", querySolution.get("platforms").toString());
-            videoGameMap.put("ignRating", querySolution.get("ignRating").toString().split("\\^\\^")[0]);
+            videoGameMap.put("ignRating", querySolution.get("ignRatings").toString().split("\\^\\^")[0]);
             videoGameMap.put("relatedTopics", querySolution.get("relatedTopics").toString());
         }
         catch (Exception e) {
@@ -82,9 +146,50 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
         return videoGameMap;
     }
 
+    private static List<Map<String, String>> executeFeaturedGamesQuery() {
+        String queryString = featuredGamesQueryConstructor();
+
+        Query query = QueryFactory.create(queryString);
+
+        List<Map<String, String>> videoGameList = new ArrayList<>();
+        List<Map<String, String>> pickedVideoGames = new ArrayList<>();
+
+        Random random = new Random();
+        int bound = 20;
+
+        try(QueryExecution queryExecution = QueryExecutionFactory.sparqlService(dbpediaSparqlEndpoint, query)) {
+            ResultSet resultSet = queryExecution.execSelect();
+            QuerySolution querySolution;
+            Map<String, String> videoGameMap;
+            while (resultSet.hasNext()) {
+                querySolution = resultSet.next();
+
+                videoGameMap = new HashMap<>();
+
+                videoGameMap.put("game", querySolution.get("game").toString());
+                videoGameMap.put("name", querySolution.get("name").toString());
+                videoGameMap.put("comment", querySolution.get("comment").toString());
+                videoGameMap.put("image", querySolution.get("image").toString());
+                videoGameMap.put("ignRating", querySolution.get("ignRating").toString());
+
+                videoGameList.add(videoGameMap);
+            }
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        for(int i = 0; i<4; i++) {
+            int randomIndex = random.nextInt(bound);
+            pickedVideoGames.add(videoGameList.get(randomIndex));
+        }
+
+        return pickedVideoGames;
+    }
+
     @Override
     public List<Map<String, String>> getAllVideoGames() {
-        return null;
+        return executeAllGamesQuery();
     }
 
     @Override
@@ -92,20 +197,9 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
         return executeSingleGameQuery(name);
     }
 
+    @Override
+    public List<Map<String, String>> getFeaturedVideoGames() {
+        return executeFeaturedGamesQuery();
+    }
 
-
-
-
-
-
-    // HELPER
-
-    //    public static String queryConstructor(String name) {
-//        return "prefix dcterms: <http://purl.org/dc/terms/>" +
-//                "SELECT *" +
-//                "WHERE { " +
-//                "<" + name + ">" + " dcterms:title ?title ; " +
-//                "dcterms:description ?description . " +
-//                "}";
-//    }
 }

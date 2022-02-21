@@ -9,4 +9,6 @@ public interface GamealyticalService {
 
     Map<String, String> getVideoGameByName(String name);
 
+    List<Map<String, String>> getFeaturedVideoGames();
+
 }
