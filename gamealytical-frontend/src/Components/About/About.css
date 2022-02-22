@@ -1,7 +1,7 @@
-#foaf {
+#foaf, #doap, #github {
     color: #1273de;
 }
 
-#foaf:hover {
+#foaf:hover, #doap:hover, #github:hover {
     color: #FF6347;
 }

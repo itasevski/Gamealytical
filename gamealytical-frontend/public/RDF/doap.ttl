@@ -1,0 +1,29 @@
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<https://github.com/itasevski/Gamealytical>
+  a doap:Project ;
+  doap:created "2022-02-22" ;
+  doap:name "Gamealytical" ;
+  doap:homepage <https://github.com/itasevski/Gamealytical> ;
+  doap:shortdesc "A video game wiki web application using Semantic Web and Linked Data principles." ;
+  doap:description "A video game wiki web application using Semantic Web and Linked Data principles. The user can query a specific video game and view numerous details about it, or browse among a vast spectrum of 10,000 video games in a user-friendly interface composed of RDF data returned from DBPedia by using SPARQL services." ;
+  doap:download-page <https://github.com/itasevski/Gamealytical.git> ;
+  doap:programming-language "Java" ;
+  doap:category <https://projects.apache.org/category/big-data> ;
+  doap:release [
+    a doap:Version ;
+    doap:name "Gamealytical v1.0.0" ;
+    doap:created "2022-02-22" ;
+    doap:revision "1.0.0"
+  ] ;
+  doap:repository [
+    a doap:GitRepository ;
+    doap:location <https://github.com/itasevski/Gamealytical.git> ;
+    doap:browse <https://github.com/itasevski/Gamealytical>
+  ] ;
+  doap:maintainer [
+    a foaf:Person ;
+    foaf:name "Ivo Tasevski" ;
+    foaf:mbox <mailto:ivo_t@live.com>
+  ] .

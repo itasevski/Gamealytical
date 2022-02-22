@@ -1,6 +1,7 @@
 import React from "react";
 import {Grid, Typography} from "@material-ui/core";
 import "./About.css";
+import {Link} from "react-router-dom";
 
 const About = () => {
     return (
@@ -16,7 +17,7 @@ const About = () => {
                 <Grid item xs={12} style={{ marginTop: "20px", textAlign: "center" }}>
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "22px" }}>
-                            This web application enables you to search for and view many details about any video game. It uses RDF data and follows the Linked Data principles to retrieve data from DBpedia, by executing SPARQL queries on DBPedia's SPARQL endpoint.
+                            This open-source web application enables you to search for and view many details about any video game. It uses RDF data and follows the Linked Data principles to retrieve data from DBpedia, by executing SPARQL queries on DBPedia's SPARQL endpoint.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -47,14 +48,28 @@ const About = () => {
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "22px" }}>
                             My name is Ivo Tasevski and I am a student at the Faculty of Computer Science and Engineering in Skopje, North Macedonia. This project is for my Web-based systems subject.
-                            More information about me is available in my <a id="foaf" href="../../../src/Utilities/RDF/foaf.ttl" download>FOAF</a> file. My social links are available in the footer of this web application.
+                            More information about me is available in my <Link id="foaf" to="/RDF/foaf.ttl" target="_blank" download>FOAF</Link> file. My social links are available in the footer of this web application.
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} style={{ marginTop: "100px", textAlign: "center" }}>
+                <Grid item xs={12} style={{ marginTop: "25px", textAlign: "center" }}>
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>
-                            View the DOAP file of this project by clicking here, or by clicking on the first button in the footer.
+                            View the <Link id="doap" to="/RDF/doap.ttl" target="_blank" download>DOAP</Link> file of this project
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: "50px", textAlign: "center" }}>
+                    <Grid container justifyContent="center" direction="row" alignItems="center">
+                        <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold" }}>
+                            <a id="github" href="https://github.com/itasevski/Gamealytical" target="_blank" rel="noreferrer">GitHub Repository</a>
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: "10px", textAlign: "center" }}>
+                    <Grid container justifyContent="center" direction="row" alignItems="center">
+                        <Typography variant="subtitle1" style={{ color: "white" }}>
+                            Gamealytical v1.0.0
                         </Typography>
                     </Grid>
                 </Grid>
