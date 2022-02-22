@@ -1,7 +1,7 @@
 import React from "react";
 import {BottomNavigation, BottomNavigationAction, Tooltip} from "@material-ui/core";
 import "./Footer.css";
-import {AccountTree, Facebook, Instagram, LinkedIn} from "@material-ui/icons";
+import {AccountTree, Facebook, GitHub, Instagram, LinkedIn} from "@material-ui/icons";
 
 
 const Footer = () => {
@@ -11,13 +11,16 @@ const Footer = () => {
                 <BottomNavigationAction icon={<AccountTree className="footerLink" />} href="#" />
             </Tooltip>
             <Tooltip title="Facebook link">
-                <BottomNavigationAction icon={<Facebook className="footerLink" />} href="#" />
+                <BottomNavigationAction icon={<Facebook className="footerLink" />} href="https://www.facebook.com/ivo.t2000/" target="_blank" rel="noreferrer" />
             </Tooltip>
             <Tooltip title="Instagram link">
-                <BottomNavigationAction icon={<Instagram className="footerLink" />} href="#" />
+                <BottomNavigationAction icon={<Instagram className="footerLink" />} href="https://www.instagram.com/itasevski/" target="_blank" rel="noreferrer" />
             </Tooltip>
             <Tooltip title="LinkedIn link">
-                <BottomNavigationAction icon={<LinkedIn className="footerLink" />} href="#" />
+                <BottomNavigationAction icon={<LinkedIn className="footerLink" />} href="https://www.linkedin.com/in/ivo-tasevski-5b920b22a/" target="_blank" rel="noreferrer" />
+            </Tooltip>
+            <Tooltip title="GitHub link">
+                <BottomNavigationAction icon={<GitHub className="footerLink" />} href="https://github.com/itasevski" target="_blank" rel="noreferrer" />
             </Tooltip>
         </BottomNavigation>
     )

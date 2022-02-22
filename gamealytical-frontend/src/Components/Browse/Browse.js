@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    Button,
+    Button, CircularProgress,
     Grid,
     Table,
     TableBody,
@@ -11,29 +11,15 @@ import {
     TableRow
 } from "@material-ui/core";
 import "./Browse.css";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-const Browse = () => {
+const Browse = (props) => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [searchInProgress, setSearchInProgress] = React.useState(false);
+    const [currentRow, setCurrentRow] = React.useState("");
 
-    function createData(name, releaseDate, creator, imageUrl) {
-        return {
-            name,
-            releaseDate,
-            creator,
-            imageUrl
-        };
-    }
-
-    const rows = [
-        createData("Grand Theft Auto V", "September 17, 2013", "Rockstar Games", "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png"),
-        createData("Grand Theft Auto IV", "April 28, 2008", "Rockstar Games", "https://upload.wikimedia.org/wikipedia/en/b/b7/Grand_Theft_Auto_IV_cover.jpg"),
-        createData("Battlefield 1","October 21, 2016", "DICE", "https://upload.wikimedia.org/wikipedia/en/f/fc/Battlefield_1_cover_art.jpg"),
-        createData("Battlefield V","November 9, 2018", "DICE", "https://upload.wikimedia.org/wikipedia/en/f/f0/Battlefield_V_standard_edition_box_art.jpg"),
-        createData("Call of Duty: Black Ops 1","November 9, 2010", "Activision", "https://upload.wikimedia.org/wikipedia/en/0/02/CoD_Black_Ops_cover.png"),
-        createData("Player Unknown's Battlegrounds","March 23, 2017", "KRAFTON", "https://i1.sndcdn.com/artworks-7dd4JObG769Fy1sF-Cm8DzA-t500x500.jpg")
-    ];
+    let navigate = useNavigate();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -50,41 +36,53 @@ const Browse = () => {
                 <Grid item xs={12}>
                     <Grid container>
                         <TableContainer>
-                            <Table sx={{ minWidth: 850 }} style={{ width: 1400 }}>
+                            <Table sx={{ minWidth: 850 }} style={{ width: 1700 }}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell style={{ color: "white", fontWeight: "bolder", fontSize: "19px" }} id="cell-heading-1" align="left">Name</TableCell>
-                                        <TableCell style={{ color: "white", fontWeight: "bolder", fontSize: "19px" }} id="cell-heading-2" align="center">Release date</TableCell>
-                                        <TableCell style={{ color: "white", fontWeight: "bolder", fontSize: "19px" }} id="cell-heading-3" align="center">Creator</TableCell>
-                                        <TableCell style={{ color: "white", fontWeight: "bolder", fontSize: "19px" }} id="cell-heading-4" align="center"> </TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-1" align="left">Name</TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-2" align="center">Genre</TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-2" align="center">Publisher</TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-2" align="center">Release dates</TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-3" align="center">IGN rating</TableCell>
+                                        <TableCell style={{ color: "#FF6347", fontWeight: "bolder", fontSize: "24px" }} id="cell-heading-4" align="center"> </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {props.allGames.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((videoGame) => {
                                         return (
                                             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "17px" }} align="left">
-                                                    <img src={row.imageUrl} width={100} height={105} alt={row.name} />
-                                                    <span style={{ marginLeft: "15px", paddingBottom: "50px" }}>{row.name}</span>
+                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "20px" }} align="left">
+                                                    <img src={videoGame.image} width={100} height={105} alt={videoGame.name.replace("@en", "")} />
+                                                    <span style={{ marginLeft: "15px", paddingBottom: "50px" }}>{videoGame.name.replace("@en", "")}</span>
                                                 </TableCell>
-                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "17px" }} align="center">{row.releaseDate}</TableCell>
-                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "17px" }} align="center">{row.creator}</TableCell>
+                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "20px" }} align="center">{videoGame.genre}</TableCell>
+                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "20px" }} align="center">{videoGame.publisher}</TableCell>
+                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "20px" }} align="center">{videoGame.releaseDates}</TableCell>
+                                                <TableCell style={{ color: "white", fontWeight: "bold", fontSize: "20px" }} align="center">{videoGame.ignRating}</TableCell>
                                                 <TableCell align="center">
-                                                    <Link to="/gameDetails" style={{ textDecoration: "none", color: "white" }}>
-                                                        <Button id="viewDetailsButton" variant="outlined" color="primary">
-                                                            View details
-                                                        </Button>
-                                                    </Link>
+                                                    <Button id="viewDetailsButton" variant="outlined" color="primary" onClick={() => {
+                                                        let path = `/gameDetails`;
+
+                                                        setSearchInProgress(true);
+                                                        setCurrentRow(videoGame.name)
+
+                                                        props.onViewDetails(videoGame.name.replace("@en", "")).then((res) => navigate(path));
+                                                    }}>
+                                                        View details
+                                                        {(searchInProgress === true && videoGame.name === currentRow) &&
+                                                        <CircularProgress style={{ marginLeft: "10px", color: "white" }} size={20} />
+                                                        }
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         );
                                     })}
                                 </TableBody>
                                 <TablePagination
-                                    style={{ backgroundColor: "white", marginTop: "15px", borderRadius: "10px" }}
+                                    style={{ backgroundColor: "#FF6347", color: "white", fontWeight: "bold", fontSize: "20px", marginTop: "15px", borderRadius: "10px", width: "125%" }}
                                     rowsPerPageOptions={[5, 10, 25]}
                                     component="div"
-                                    count={rows.length} // change to length of total number of rows/games
+                                    count={props.allGames.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onPageChange={handleChangePage}

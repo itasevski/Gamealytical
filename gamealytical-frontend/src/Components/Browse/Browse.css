@@ -2,9 +2,10 @@
     font-size: 17px;
     font-family: Courier New;
     font-weight: bolder;
-    margin-left: 100px;
+    margin-left: 75px;
     color: white;
     border-color: white;
+    width: 220px;
 }
 
 #viewDetailsButton:hover {

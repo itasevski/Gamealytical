@@ -1,3 +1,16 @@
+#dbpediaLink {
+    font-weight: bolder;
+    color: white;
+}
+
 #dbpediaLink:hover {
     color: #FF6347;
+}
+
+.relatedTopicLink {
+    color: #FF6347;
+}
+
+.relatedTopicLink:hover {
+    color: white;
 }

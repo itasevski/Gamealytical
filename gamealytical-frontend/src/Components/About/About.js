@@ -29,7 +29,9 @@ const About = () => {
                 <Grid item xs={12} style={{ marginTop: "20px", textAlign: "center" }}>
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "22px" }}>
-                            By using the text field on the home page, you can search for any video game you want by entering the full name of the video game and pressing the ENTER key. Case matching isn't enabled, so you can enter the name however you like (uppercase or lowercase).
+                            On the home page, there are 4 featured video games. These video games are picked randomly from a subset of the highest-rated video games, as rated by IGN.
+                            By using the text field on the Home page, you can search for any video game you want by entering the full name of the video game and pressing the ENTER key. Beware of case matching, though, as it is enabled. Make sure you place the capital and lowercase letters, as well as spaces and other symbols in the correct places.
+                            In the "Browse" section of the web application, you can browse among 10,000 video games retrieved from DBPedia, shown in a user-friendly interface. You can also choose to view more details about a certain video game.
                         </Typography>
                     </Grid>
                 </Grid>
@@ -48,7 +50,7 @@ const About = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} style={{ marginTop: "120px", textAlign: "center" }}>
+                <Grid item xs={12} style={{ marginTop: "100px", textAlign: "center" }}>
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>
                             View the DOAP file of this project by clicking here, or by clicking on the first button in the footer.

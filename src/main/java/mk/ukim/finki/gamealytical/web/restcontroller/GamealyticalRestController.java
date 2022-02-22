@@ -2,10 +2,7 @@ package mk.ukim.finki.gamealytical.web.restcontroller;
 
 import lombok.AllArgsConstructor;
 import mk.ukim.finki.gamealytical.service.GamealyticalService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +10,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/gamealytical")
+@CrossOrigin(origins = "http://localhost:3000")
 public class GamealyticalRestController {
 
     private final GamealyticalService gamealyticalService;

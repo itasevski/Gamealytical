@@ -69,13 +69,14 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
                 "prefix dbp: <http://dbpedia.org/property/>" +
                 "prefix owl: <http://www.w3.org/2002/07/owl#>" +
                 "prefix xsd: <http://www.w3.org/2001/XMLSchema#>" +
-                "SELECT DISTINCT ?game ?name ?comment ?image ?ignRating " +
-                "WHERE {" +
-                "?game rdf:type dbo:VideoGame ;" +
-                "rdfs:label ?name ;" +
-                "rdfs:comment ?comment ;" +
-                "dbo:thumbnail ?image ;" +
-                "dbp:ign ?ignRating ." +
+                "SELECT DISTINCT ?game ?name ?comment ?image ?ignRating (group_concat(distinct ?releaseDate; separator=\", \") as ?releaseDates) " +
+                "WHERE { " +
+                "?game rdf:type dbo:VideoGame ; " +
+                "rdfs:label ?name ; " +
+                "rdfs:comment ?comment ; " +
+                "dbo:thumbnail ?image ; " +
+                "dbp:ign ?ignRating . " +
+                "OPTIONAL { ?game dbo:releaseDate ?releaseDate } . " +
                 "FILTER(lang(?name) = \"en\")" +
                 "FILTER(lang(?comment) = \"en\")" +
                 "FILTER(xsd:decimal(?ignRating))" +
@@ -170,7 +171,8 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
                 videoGameMap.put("name", querySolution.get("name").toString());
                 videoGameMap.put("comment", querySolution.get("comment").toString());
                 videoGameMap.put("image", querySolution.get("image").toString());
-                videoGameMap.put("ignRating", querySolution.get("ignRating").toString());
+                videoGameMap.put("ignRating", querySolution.get("ignRating").toString().split("\\^\\^")[0]);
+                videoGameMap.put("releaseDates", querySolution.get("releaseDates").toString());
 
                 videoGameList.add(videoGameMap);
             }
@@ -179,8 +181,14 @@ public class GamealyticalServiceImplementation implements GamealyticalService {
             System.err.println(e.getMessage());
         }
 
-        for(int i = 0; i<4; i++) {
+        List<Integer> randomNumbersList = new ArrayList<>(4);
+
+        while (pickedVideoGames.size() < 4) {
             int randomIndex = random.nextInt(bound);
+            if(randomNumbersList.contains(randomIndex)) {
+                continue;
+            }
+            randomNumbersList.add(randomIndex);
             pickedVideoGames.add(videoGameList.get(randomIndex));
         }
 

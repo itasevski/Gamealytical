@@ -4,3 +4,8 @@ main {
     flex-direction: column;
     background-image: url("../Images/background.jpg");
 }
+
+#loadingCircle {
+    margin: auto auto;
+    color: #FF6347;
+}
