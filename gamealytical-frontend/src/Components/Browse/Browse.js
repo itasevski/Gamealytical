@@ -11,7 +11,7 @@ import {
     TableRow
 } from "@material-ui/core";
 import "./Browse.css";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Browse = (props) => {
     const [page, setPage] = React.useState(0);

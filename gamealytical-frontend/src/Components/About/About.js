@@ -1,5 +1,6 @@
 import React from "react";
 import {Grid, Typography} from "@material-ui/core";
+import "./About.css";
 
 const About = () => {
     return (
@@ -46,7 +47,7 @@ const About = () => {
                     <Grid container justifyContent="center" direction="row" alignItems="center">
                         <Typography variant="subtitle1" style={{ color: "white", fontWeight: "bold", fontSize: "22px" }}>
                             My name is Ivo Tasevski and I am a student at the Faculty of Computer Science and Engineering in Skopje, North Macedonia. This project is for my Web-based systems subject.
-                            More information about me is available in my FOAF file:
+                            More information about me is available in my <a id="foaf" href="../../../src/Utilities/RDF/foaf.ttl" download>FOAF</a> file. My social links are available in the footer of this web application.
                         </Typography>
                     </Grid>
                 </Grid>

@@ -2,7 +2,7 @@ main {
     min-height: 110vh;
     display: flex;
     flex-direction: column;
-    background-image: url("../Images/background.jpg");
+    background-image: url("../../../src/Utilities/Images/background.jpg");
 }
 
 #loadingCircle {

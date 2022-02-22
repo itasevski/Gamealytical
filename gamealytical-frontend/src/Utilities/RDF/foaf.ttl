@@ -1,0 +1,52 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ns0: <http://webns.net/mvcb/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix rel: <http://purl.org/vocab/relationship/> .
+@prefix dbpedia: <https://dbpedia.org/page/> .
+
+<http://gamealytical.com/>
+  a foaf:PersonalProfileDocument ;
+  foaf:maker <http://gamealytical.com/#me> ;
+  foaf:primaryTopic <http://gamealytical.com/#me> .
+
+<http://gamealytical.com/#me>
+  a foaf:Person ;
+  foaf:name "Ivo Tasevski" ;
+  foaf:gender "Male" ;
+  foaf:title "Mr" ;
+  foaf:givenname "Ivo" ;
+  foaf:family_name "Tasevski" ;
+  foaf:nick "Tase" ;
+  foaf:mbox_sha1sum "be37914ee94bbf58aac0b809edfb63682892ea91" ;
+  foaf:homepage <https://www.linkedin.com/in/ivo-tasevski-5b920b22a/> ;
+  foaf:depiction <https://media-exp1.licdn.com/dms/image/C4D03AQE8NcXZDB3xbA/profile-displayphoto-shrink_800_800/0/1641040177449?e=1651104000&v=beta&t=dzgMts6B5JtJmXNhqujHyhtk0eOzc3a9-GTBEYUFY14> ;
+  foaf:phone <tel:+389-71-222-476> ;
+  foaf:schoolHomepage <https://www.finki.ukim.mk/en> ;
+  foaf:knows [
+    a foaf:Person ;
+    foaf:name "Halid Veaposki" ;
+    foaf:mbox_sha1sum "fcbfdb1085dab6b279f08edd83b166f9d02a2cb3" ;
+    rdfs:seeAlso <https://www.facebook.com/halid.veaposki.7>
+  ], [
+    a foaf:Person ;
+    foaf:name "Bojan Petkovski" ;
+    foaf:mbox_sha1sum "0743ba4afc192896a51449f5eb54cf9b64aa106b" ;
+    rdfs:seeAlso <https://www.facebook.com/profile.php?id=100006995805066>
+  ], [
+    a foaf:Person ;
+    foaf:name "Viktorija Nikolovska" ;
+    foaf:mbox_sha1sum "04c7d976c54f809430bb662bb12f4b89996d55d3" ;
+    rdfs:seeAlso <https://www.facebook.com/profile.php?id=100001421200098>
+  ] ;
+  foaf:based_near [
+    geo:lat "41.9981" ;
+    geo:lng "21.4254"
+  ] ;
+  rel:participantIn <https://courses.finki.ukim.mk/course/view.php?id=1889> ;
+  rel:wouldLikeToKnow [
+    a foaf:Person ;
+    foaf:name "Tom Hanks" ;
+    rel:spouseOf <dbpedia:Rita_Wilson> ;
+    rdfs:seeAlso <dbpedia:Tom_Hanks>
+  ] .
